@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <!-- <script src="//unpkg.com/xhook@latest/dist/xhook.min.js"></script> -->
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    // window.postMessage("THE IS A MESSAGE");
+    // console.log(xhook);
+    // xhook.before(function (request, callback) {
+    //   console.log("FROM INSIDE", request);
+    //   window.postMessage("the message", "*");
+    //   chrome.runtime.sendMessage("THIS IS A MESSAGE");
+
+    //   callback({
+    //     status: 404,
+    //   });
+    // });
+    axios
+      .get("https://cat-fact.herokuapp.com")
+      .then(() => console.log("OK"))
+      .catch(() => console.log("CANCEL"));
+  </script>
+</html>

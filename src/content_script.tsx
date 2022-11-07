@@ -1,9 +1,11 @@
-chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-  if (msg.color) {
-    console.log("Receive color = " + msg.color);
-    document.body.style.backgroundColor = msg.color;
-    sendResponse("Change color to " + msg.color);
-  } else {
-    sendResponse("Color message is none.");
-  }
+import inject from "./service/injectScript";
+
+window.addEventListener("message", (event) => {
+  console.log("THIS", event);
 });
+
+chrome.runtime.onMessage.addListener((event) => {
+  console.log("THIS IS FROM RUN TIME", event);
+});
+
+inject();
