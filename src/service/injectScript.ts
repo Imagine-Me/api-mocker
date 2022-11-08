@@ -1,6 +1,6 @@
 const inject = () => {
   const s = document.createElement("script");
-  s.setAttribute("src", chrome.runtime.getURL("js/inject.js"));
+  s.setAttribute("src", chrome.runtime.getURL("js/interceptor.js"));
   document.head.append(s);
 };
 
