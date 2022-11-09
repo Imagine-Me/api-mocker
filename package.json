@@ -18,8 +18,11 @@
     "url": "https://github.com/Imagine-Me/api-mocker.git"
   },
   "dependencies": {
+    "@types/localforage": "^0.0.34",
+    "localforage": "^1.10.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "url": "^0.11.0",
     "xhook": "^1.5.5"
   },
   "devDependencies": {
