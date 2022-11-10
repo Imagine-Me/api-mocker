@@ -1,24 +1,23 @@
 import url from "url";
-
-const dbData = {
-  host: "datausa.io",
-  pathname: "/api/data",
-  queries: {
-    drilldowns: "Nation",
-    measures: "Population",
-  },
-};
-
 export function parseUrl(urlString: string) {
-  const parsed = url.parse(urlString);
-  const { host, pathname, query } = parsed;
-  const queries = query.split("&").reduce((acc, q) => {
-    const splitted = q.split("=");
-    acc[splitted[0]] = splitted[1];
-    return acc;
-  }, {});
-  return { host, pathname, queries };
+  try {
+    const parsed = url.parse(urlString);
+    const { host, pathname, query } = parsed;
+    let queries = {} as Record<string, string>;
+    if (query) {
+      queries = query.split("&").reduce((acc, q) => {
+        const splitted = q.split("=");
+        acc[splitted[0]] = splitted[1];
+        return acc;
+      }, {} as Record<string, string>);
+    }
+    return { host, pathname, queries };
+  } catch (e) {
+    console.error(e);
+    return { host: null, pathname: null, queries: null };
+  }
 }
+
 
 export function getDetailsFromPath(pathName: string) {
   const paramRoute = /:[A-Za-z]*/g;
