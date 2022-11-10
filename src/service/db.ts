@@ -17,24 +17,34 @@ export class Db {
   }
   async _getMocksByHostName(hostName: string) {
     try {
-      const data = (await this.instance.getItem(hostName)) as DbModel;
+      const data: Mock[] = await this.instance.getItem(hostName);
       if (data) {
-        return data.mocks;
+        return data;
       }
       return [];
     } catch (e) {
       console.log("[db.ts][_getMocksByHostName]", e);
+      throw new Error(e);
     }
   }
-  async addMockData(url: string, response?: any) {
-    const { host, pathname, queries } = parseUrl(url);
-    const { params, pathRegexp } = getDetailsFromPath(pathname);
-    const mocks = await this._getMocksByHostName(host);
-    const mock = {
-      path: pathRegexp,
-      params,
-      queries: Object.keys(queries),
-    } as Mock;
-    mocks.push(mock);
+
+  async _addMocks(hostName: string, mocks: Mock[]) {
+    await this.instance.setItem(hostName, mocks);
+  }
+  async addMockData(hostName: string, mock: Mock) {
+    const mocks = await this._getMocksByHostName(hostName);
+    const mockIndex = mocks.findIndex(
+      (_mock) => _mock.path.toString() == mock.path.toString()
+    );
+    if (mockIndex !== -1) {
+      mocks.splice(mockIndex, 1, mock);
+    } else {
+      mocks.push(mock);
+    }
+    await this._addMocks(hostName, mocks);
   }
 }
+
+const dbInstance = new Db();
+
+export default dbInstance;

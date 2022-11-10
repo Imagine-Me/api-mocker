@@ -1,6 +1,7 @@
-import React, { useReducer } from "react";
+import React from "react";
 import { Grid, Select, TextField, Button, MenuItem } from "@mui/material";
-import { styled } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { requestValues, StateProps } from "../../page/main";
 
 const TextFieldStyled = styled(TextField)`
   .MuiOutlinedInput-root {
@@ -19,52 +20,21 @@ const ButtonStyled = styled(Button)`
   margin-left: 10px;
 `;
 
-const requestValues = {
-  GET: null,
-  POST: null,
-  PUT: null,
-  PATCH: null,
-  DELETE: null,
-};
-
-interface StateProps {
-  request: keyof typeof requestValues;
+interface UrlFormProps extends Partial<StateProps> {
+  dispatch: React.Dispatch<any>;
+  onSubmit: () => void;
 }
 
-const initialValue = {
-  request: "GET",
-  url: "",
-} as StateProps;
+export default function UrlForm(props: UrlFormProps) {
+  const { request, url, dispatch, onSubmit } = props;
 
-const reducer = (state = initialValue, action) => {
-  switch (action.type) {
-    case "URL": {
-      return {
-        ...state,
-        url: action.payload,
-      };
-    }
-    case "REQUEST": {
-      return {
-        ...state,
-        request: action.payload,
-      };
-    }
-  }
-  return state;
-};
-
-export default function UrlForm() {
-  const [state, dispatch] = useReducer(reducer, initialValue);
-
-  const onSave = () => {};
   return (
     <Grid container>
       <Grid item xs={10}>
         <Grid container>
           <Grid item xs={2}>
             <SelectStyled
-              value={state.request}
+              value={request}
               onChange={(e) =>
                 dispatch({ type: "REQUEST", payload: e.target.value })
               }
@@ -82,12 +52,13 @@ export default function UrlForm() {
                 dispatch({ type: "URL", payload: e.target.value })
               }
               placeholder="http://localhost:3000/api/:id"
+              value={url}
             />
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={2}>
-        <ButtonStyled onClick={onSave}>Save</ButtonStyled>
+        <ButtonStyled onClick={onSubmit}>Save</ButtonStyled>
       </Grid>
     </Grid>
   );
